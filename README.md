@@ -1,6 +1,6 @@
 # [[D] Thermodynamics - Hot Meals (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=2909103255)
 
-![Image](https://i.postimg.cc/1X4HT06h/Info.png)
+![Image](https://img.litet.net/logos/Info.png)
 
 Update of Dametris mod
 https://steamcommunity.com/sharedfiles/filedetails/?id=2110968173
@@ -12,14 +12,14 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2558277446
 **Includes [D] Thermodynamics - Core since this mod seems to be all it was used for
 Also included my patch for [RimFridge](https://steamcommunity.com/sharedfiles/filedetails/?id=2878183338)**
 
-![Image](https://i.postimg.cc/8csH3dWV/Notice.png)
+![Image](https://img.litet.net/logos/Notice.png)
 	
-![Image](https://i.postimg.cc/hvhrw8xB/Original-Description.png)
+![Image](https://img.litet.net/logos/OriginalDescription.png)
 
 # Overview
 
 Give you a warm feeling? Leave a like!
-![Image](https://i.postimg.cc/QtBtmX9f/FcAqtoA.png)
+![Image](https://img.litet.net/FcAqtoA.png)
 
 ## Designed for Rimworld 1.1, 1.2 
 
@@ -68,16 +68,16 @@ Each food type's mood bonus or penalty will stack with other food types. Feed th
 ### So, how do you control food temperature?
 
 
-[img=https://i.postimg.cc/BvTPDZFg/2Apzm1p.gif][/img]
+[img=https://img.litet.net/2Apzm1p.gif][/img]
 
 
 - Colonists can heat up food that's too cold at a nearby stove (or modded equivalent; can be disabled). This will be done automatically if they can find a nearby heating appliance.
 
 - With microelectronics completed, you can build a **microwave**, a dedicated appliance that reheats meals at super speed.
-[img=https://i.postimg.cc/RZRNVpzB/es3CIQ4.png][/img]
+[img=https://img.litet.net/es3CIQ4.png][/img]
 
 - With electricity completed, you can build a **heat lamp**, which will keep any food stored in it warmed to the temperature you set.
-[img=https://i.postimg.cc/63z0rfRK/vy6iWbp.png][/img]
+[img=https://img.litet.net/vy6iWbp.png][/img]
 (Also optionally slows food rot. Enable in Core settings.)
 
 - Cold drinks are good, as long as they're not frozen; put some beers in the fridge!
@@ -149,7 +149,7 @@ Let me know of any.
 - Chowder for the Heat Lamp texture.
 - Vanilla Furniture Expanded - Props and Decor for the Microwave texture.
 	
-![Image](https://i.postimg.cc/x8qR7GH9/Reporting-Issues.png)
+![Image](https://img.litet.net/logos/ReportingIssues.png)
 
 
 
@@ -163,4 +163,4 @@ Let me know of any.
 
  
 
-[![Image](https://img.shields.io/github/v/release/emipa606/DThermodynamicsHotMeals?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/2909103255) | tags:  food essentials
+[![Image](https://img.shields.io/github/v/release/emipa606/DThermodynamicsHotMeals?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/2909103255) | tags: food essentials

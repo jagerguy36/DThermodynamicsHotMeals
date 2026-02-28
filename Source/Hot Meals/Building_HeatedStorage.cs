@@ -44,8 +44,8 @@ internal class Building_HeatedStorage : Building_Storage
 
     public virtual bool IsActive()
     {
-        return compPowerTrader is { PowerOn: true } || compRefuelable is { HasFuel: true } ||
-               compPowerTrader == null && compRefuelable == null;
+        return Spawned && (compPowerTrader is { PowerOn: true } || compRefuelable is { HasFuel: true } ||
+                           compPowerTrader == null && compRefuelable == null);
     }
 
     public override void Notify_ReceivedThing(Thing newItem)

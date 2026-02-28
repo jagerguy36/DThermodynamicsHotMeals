@@ -179,10 +179,7 @@ public class CompDTemperature : ThingComp
     public override void PostSplitOff(Thing piece)
     {
         var newComp = piece.TryGetComp<CompDTemperature>();
-        if (newComp != null)
-        {
-            newComp.curTemp = curTemp;
-        }
+        newComp?.curTemp = curTemp;
 
         base.PostSplitOff(piece);
     }

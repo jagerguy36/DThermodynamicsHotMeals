@@ -266,11 +266,8 @@ public class CompDFoodTemperature : CompDTemperatureIngestible
         }
         else if (!selPawn.CanReserve(parent))
         {
-            var pawn = selPawn.Map.reservationManager.FirstRespectedReserver(parent, selPawn);
-            if (pawn == null)
-            {
-                pawn = selPawn.Map.physicalInteractionReservationManager.FirstReserverOf(selPawn);
-            }
+            var pawn = selPawn.Map.reservationManager.FirstRespectedReserver(parent, selPawn) ??
+                       selPawn.Map.physicalInteractionReservationManager.FirstReserverOf(selPawn);
 
             JobFailReason.Is(pawn != null ? "ReservedBy".Translate(pawn.LabelShort, pawn) : "Reserved".Translate());
         }

@@ -24,10 +24,7 @@ public class CompDTemperatureIngestible : CompDTemperature
     public override void PostIngested(Pawn ingester)
     {
         var temp = ingester.TryGetComp<CompDTemperature>();
-        if (temp != null)
-        {
-            temp.curTemp += (curTemp - temp.curTemp) / 5.0f;
-        }
+        temp?.curTemp += (curTemp - temp.curTemp) / 5.0f;
 
         if (ingester.needs.mood != null)
         {

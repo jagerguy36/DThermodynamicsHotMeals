@@ -1,5 +1,8 @@
 # Changelog for DThermodynamicsHotMeals
 
+1.6.4 - Added spawncheck on the heaters
+
+
 1.6.3 - Fixed compatibility with Adaptive Storage Framework correctly
 
 

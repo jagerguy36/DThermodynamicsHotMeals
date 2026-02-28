@@ -34,7 +34,7 @@ public class CompDTempControl : ThingComp
         Scribe_Values.Look(ref targetTemperature, "targetTemperature");
     }
 
-    private float RoundedToCurrentTempModeOffset(float celsiusTemp)
+    private static float RoundedToCurrentTempModeOffset(float celsiusTemp)
     {
         return GenTemperature.ConvertTemperatureOffset(
             Mathf.RoundToInt(GenTemperature.CelsiusToOffset(celsiusTemp, Prefs.TemperatureMode)), Prefs.TemperatureMode,

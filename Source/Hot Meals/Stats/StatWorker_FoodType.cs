@@ -18,7 +18,7 @@ internal class StatWorker_FoodType : StatWorker
     }
 
 
-    private void BuildColdString(CompDFoodTemperature comp, ref StringBuilder s)
+    private static void BuildColdString(CompDFoodTemperature comp, ref StringBuilder s)
     {
         var levels = comp.PropsTemp.tempLevels;
         s.AppendLine();
@@ -37,7 +37,7 @@ internal class StatWorker_FoodType : StatWorker
         s.AppendLine("HoMe.FrozenMoodWarning".Translate(GenText.ToStringTemperature(0)));
     }
 
-    private void BuildHotString(CompDFoodTemperature comp, ref StringBuilder s)
+    private static void BuildHotString(CompDFoodTemperature comp, ref StringBuilder s)
     {
         var levels = comp.PropsTemp.tempLevels;
         s.AppendLine();
@@ -56,7 +56,7 @@ internal class StatWorker_FoodType : StatWorker
         s.AppendLine("HoMe.FrozenMoodWarning".Translate(GenText.ToStringTemperature(0)));
     }
 
-    private void BuildRTString(CompDFoodTemperature comp, ref StringBuilder s)
+    private static void BuildRTString(CompDFoodTemperature comp, ref StringBuilder s)
     {
         var levels = comp.PropsTemp.tempLevels;
         s.AppendLine();
