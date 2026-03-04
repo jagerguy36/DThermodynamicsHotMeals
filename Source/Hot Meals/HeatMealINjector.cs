@@ -32,12 +32,21 @@ public static class HeatMealInjector
     public static IEnumerable<Toil> Heat(JobDriver jd, TargetIndex foodIndex = TargetIndex.A,
         TargetIndex finalLocation = TargetIndex.C, TargetIndex tableIndex = TargetIndex.None)
     {
-        var oldFinal = jd.job.GetTarget(finalLocation);
-
-        var empty = new Toil();
-        yield return Toils_Jump.JumpIf(empty, delegate
+        var exit = ToilMaker.MakeToil("ExitPoint");
+        var clean = ToilMaker.MakeToil("clean");
+        clean.initAction = delegate
         {
-            var actor = empty.actor;
+            var actor = clean.actor;
+            var curJob = actor.jobs.curJob;
+            var queue = curJob.GetTargetQueue(TargetIndex.B);
+            if (queue.Count > 0)
+            {
+                queue.RemoveAt(0);
+            }
+        };
+        yield return Toils_Jump.JumpIf(exit, delegate
+        {
+            var actor = exit.actor;
             var curJob = actor.jobs.curJob;
             LocalTargetInfo food = curJob.GetTarget(foodIndex).Thing;
 
@@ -60,7 +69,7 @@ public static class HeatMealInjector
             return true;
         });
         Thing heater = null;
-        var getHeater = new Toil();
+        var getHeater = ToilMaker.MakeToil("GetHeaterToil");
         getHeater.initAction = delegate
         {
             var actor = getHeater.actor;
@@ -72,42 +81,35 @@ public static class HeatMealInjector
                 table = curJob.GetTarget(tableIndex).Thing;
             }
 
-            heater = Toils_HeatMeal.FindPlaceToHeatFood(foodToHeat, actor, searchNear: table);
+            var heater = Toils_HeatMeal.FindPlaceToHeatFood(foodToHeat, actor, searchNear: table);
             if (heater != null)
             {
-                curJob.SetTarget(finalLocation, heater);
+                curJob.GetTargetQueue(TargetIndex.B).Insert(0, heater);
+            }
+            else
+            {
+                curJob.GetTargetQueue(TargetIndex.B).Insert(0, LocalTargetInfo.Invalid);
             }
         };
         yield return getHeater;
-        yield return Toils_Jump.JumpIf(empty, () => heater == null);
+        yield return Toils_Jump.JumpIf(clean, () => !curJob.GetTargetQueue(TargetIndex.B)[0].IsValid);
+        var targetHeater = curJob.GetTargetQueue(TargetIndex.B)[0];
         if (!HotMealsSettings.multipleHeat)
         {
-            yield return Toils_Reserve.Reserve(finalLocation);
-            yield return Toils_Goto.GotoThing(finalLocation, PathEndMode.InteractionCell);
-            yield return Toils_HeatMeal.HeatMeal(foodIndex, finalLocation).FailOnDespawnedNullOrForbiddenPlacedThings()
-                .FailOnCannotTouch(finalLocation, PathEndMode.InteractionCell);
-            yield return Toils_Reserve.Release(finalLocation);
+            yield return Toils_Reserve.Reserve(targetHeater);
+            yield return Toils_Goto.GotoThing(targetHeater, PathEndMode.InteractionCell);
+            yield return Toils_HeatMeal.HeatMeal(foodIndex, targetHeater).FailOnDespawnedNullOrForbiddenPlacedThings()
+                .FailOnCannotTouch(targetHeater, PathEndMode.InteractionCell);
+            yield return Toils_Reserve.Release(targetHeater);
         }
         else
         {
-            yield return Toils_Goto.GotoThing(finalLocation, PathEndMode.Touch);
-            yield return Toils_HeatMeal.HeatMeal(foodIndex, finalLocation).FailOnDespawnedNullOrForbiddenPlacedThings()
-                .FailOnCannotTouch(finalLocation, PathEndMode.Touch);
+            yield return Toils_Goto.GotoThing(targetHeater, PathEndMode.Touch);
+            yield return Toils_HeatMeal.HeatMeal(foodIndex, targetHeater).FailOnDespawnedNullOrForbiddenPlacedThings()
+                .FailOnCannotTouch(targetHeater, PathEndMode.Touch);
         }
 
-        yield return empty;
-        if (oldFinal == LocalTargetInfo.Invalid)
-        {
-            yield break;
-        }
-
-        var resetC = new Toil();
-        resetC.initAction = delegate
-        {
-            var actor = resetC.actor;
-            var curJob = actor.jobs.curJob;
-            curJob.SetTarget(finalLocation, oldFinal);
-        };
-        yield return resetC;
+        yield return clean;
+        yield return exit;
     }
 }

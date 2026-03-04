@@ -24,6 +24,8 @@ public class JobDriver_Serve_MakeNewToils
     {
         foreach (var toil in HeatMealInjector.InjectHeat(values, __instance, 4, TargetIndex.B))
         {
+
+            //Before TakeItemFromInventoryToCarrier
             yield return toil;
         }
     }
