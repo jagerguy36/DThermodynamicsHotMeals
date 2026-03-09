@@ -16,7 +16,7 @@ public static class JobDriver_FoodFeedPatient_MakeNewToils
             numToilsBeforeGoto--;
         }
 
-        foreach (var toil in HeatMealInjector.InjectHeat(values, __instance, numToilsBeforeGoto))
+        foreach (var toil in HeatMealInjector.InjectHeat(values, numToilsBeforeGoto))
         {
             yield return toil;
         }

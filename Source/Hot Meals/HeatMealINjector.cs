@@ -7,7 +7,7 @@ namespace DHotMeals;
 
 public static class HeatMealInjector
 {
-    public static IEnumerable<Toil> InjectHeat(IEnumerable<Toil> values, JobDriver jd, int num,
+    public static IEnumerable<Toil> InjectHeat(IEnumerable<Toil> values, int num,
         TargetIndex foodIndex = TargetIndex.A, TargetIndex finalLocation = TargetIndex.C)
     {
         using var enumerator = values.GetEnumerator();
@@ -17,7 +17,7 @@ public static class HeatMealInjector
             yield return enumerator.Current;
         }
 
-        foreach (var toil in Heat(jd, foodIndex, finalLocation))
+        foreach (var toil in Heat(foodIndex, finalLocation))
         {
             yield return toil;
         }
@@ -29,7 +29,7 @@ public static class HeatMealInjector
         }
     }
 
-    public static IEnumerable<Toil> Heat(JobDriver jd, TargetIndex foodIndex = TargetIndex.A,
+    public static IEnumerable<Toil> Heat(TargetIndex foodIndex = TargetIndex.A,
         TargetIndex finalLocation = TargetIndex.C, TargetIndex tableIndex = TargetIndex.None)
     {
         var exit = ToilMaker.MakeToil("ExitPoint");

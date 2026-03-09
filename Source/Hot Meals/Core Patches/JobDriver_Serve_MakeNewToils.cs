@@ -22,7 +22,7 @@ public class JobDriver_Serve_MakeNewToils
 
     public static IEnumerable<Toil> Postfix(IEnumerable<Toil> values, JobDriver __instance)
     {
-        foreach (var toil in HeatMealInjector.InjectHeat(values, __instance, 4, TargetIndex.B))
+        foreach (var toil in HeatMealInjector.InjectHeat(values, 4, TargetIndex.B))
         {
 
             //Before TakeItemFromInventoryToCarrier
