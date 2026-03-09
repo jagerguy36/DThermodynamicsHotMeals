@@ -25,7 +25,7 @@ internal class JobDriver_FoodDeliver_MakeNewToils
             numToilsBeforeGoto = 3;
         }
 
-        foreach (var toil in HeatMealInjector.InjectHeat(values, numToilsBeforeGoto))
+        foreach (var toil in HeatMealInjector.InjectHeat(values, __instance, numToilsBeforeGoto))
         {
             yield return toil;
         }

@@ -7,7 +7,7 @@ namespace DHotMeals;
 
 public static class HeatMealInjector
 {
-    public static IEnumerable<Toil> InjectHeat(IEnumerable<Toil> values, int num,
+    public static IEnumerable<Toil> InjectHeat(IEnumerable<Toil> values, JobDriver jd, int num,
         TargetIndex foodIndex = TargetIndex.A, TargetIndex finalLocation = TargetIndex.C)
     {
         using var enumerator = values.GetEnumerator();
@@ -17,7 +17,7 @@ public static class HeatMealInjector
             yield return enumerator.Current;
         }
 
-        foreach (var toil in Heat(foodIndex, finalLocation))
+        foreach (var toil in Heat(jd, foodIndex, finalLocation))
         {
             yield return toil;
         }
@@ -29,25 +29,23 @@ public static class HeatMealInjector
         }
     }
 
-    public static IEnumerable<Toil> Heat(TargetIndex foodIndex = TargetIndex.A,
+    public static IEnumerable<Toil> Heat(JobDriver jd, TargetIndex foodIndex = TargetIndex.A,
         TargetIndex finalLocation = TargetIndex.C, TargetIndex tableIndex = TargetIndex.None)
     {
         var exit = ToilMaker.MakeToil("ExitPoint");
         var clean = ToilMaker.MakeToil("clean");
+        var curJob = jd.job;
         clean.initAction = delegate
         {
-            var actor = clean.actor;
-            var curJob = actor.jobs.curJob;
             var queue = curJob.GetTargetQueue(TargetIndex.B);
-            if (queue.Count > 0)
+            if (!queue.NullOrEmpty())
             {
+                curJob.SetTarget(TargetIndex.C, queue[0]);
                 queue.RemoveAt(0);
             }
         };
         yield return Toils_Jump.JumpIf(exit, delegate
         {
-            var actor = exit.actor;
-            var curJob = actor.jobs.curJob;
             LocalTargetInfo food = curJob.GetTarget(foodIndex).Thing;
 
             var comp = food.Thing?.TryGetComp<CompDFoodTemperature>();
@@ -68,12 +66,10 @@ public static class HeatMealInjector
 
             return true;
         });
-        Thing heater = null;
         var getHeater = ToilMaker.MakeToil("GetHeaterToil");
         getHeater.initAction = delegate
         {
             var actor = getHeater.actor;
-            var curJob = actor.jobs.curJob;
             var foodToHeat = curJob.GetTarget(foodIndex).Thing;
             Thing table = null;
             if (tableIndex != TargetIndex.None)
@@ -81,32 +77,25 @@ public static class HeatMealInjector
                 table = curJob.GetTarget(tableIndex).Thing;
             }
 
+            curJob.GetTargetQueue(TargetIndex.B).Insert(0, curJob.GetTarget(TargetIndex.C));
             var heater = Toils_HeatMeal.FindPlaceToHeatFood(foodToHeat, actor, searchNear: table);
-            if (heater != null)
-            {
-                curJob.GetTargetQueue(TargetIndex.B).Insert(0, heater);
-            }
-            else
-            {
-                curJob.GetTargetQueue(TargetIndex.B).Insert(0, LocalTargetInfo.Invalid);
-            }
+            curJob.SetTarget(TargetIndex.C, heater ?? LocalTargetInfo.Invalid);
         };
         yield return getHeater;
-        yield return Toils_Jump.JumpIf(clean, () => !curJob.GetTargetQueue(TargetIndex.B)[0].IsValid);
-        var targetHeater = curJob.GetTargetQueue(TargetIndex.B)[0];
+        yield return Toils_Jump.JumpIf(clean, () => !jd.job.GetTarget(TargetIndex.C).IsValid);
         if (!HotMealsSettings.multipleHeat)
         {
-            yield return Toils_Reserve.Reserve(targetHeater);
-            yield return Toils_Goto.GotoThing(targetHeater, PathEndMode.InteractionCell);
-            yield return Toils_HeatMeal.HeatMeal(foodIndex, targetHeater).FailOnDespawnedNullOrForbiddenPlacedThings()
-                .FailOnCannotTouch(targetHeater, PathEndMode.InteractionCell);
-            yield return Toils_Reserve.Release(targetHeater);
+            yield return Toils_Reserve.Reserve(TargetIndex.C);
+            yield return Toils_Goto.GotoThing(TargetIndex.C, PathEndMode.InteractionCell);
+            yield return Toils_HeatMeal.HeatMeal(foodIndex, TargetIndex.C).FailOnDespawnedNullOrForbiddenPlacedThings()
+                .FailOnCannotTouch(TargetIndex.C, PathEndMode.InteractionCell);
+            yield return Toils_Reserve.Release(TargetIndex.C);
         }
         else
         {
-            yield return Toils_Goto.GotoThing(targetHeater, PathEndMode.Touch);
-            yield return Toils_HeatMeal.HeatMeal(foodIndex, targetHeater).FailOnDespawnedNullOrForbiddenPlacedThings()
-                .FailOnCannotTouch(targetHeater, PathEndMode.Touch);
+            yield return Toils_Goto.GotoThing(TargetIndex.C, PathEndMode.Touch);
+            yield return Toils_HeatMeal.HeatMeal(foodIndex, TargetIndex.C).FailOnDespawnedNullOrForbiddenPlacedThings()
+                .FailOnCannotTouch(TargetIndex.C, PathEndMode.Touch);
         }
 
         yield return clean;

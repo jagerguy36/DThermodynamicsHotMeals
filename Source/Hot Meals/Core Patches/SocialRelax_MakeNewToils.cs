@@ -22,7 +22,7 @@ internal class SocialRelax_MakeNewToils
 
         var numToilsBeforeGoto = 2;
 
-        foreach (var toil in HeatMealInjector.InjectHeat(values, numToilsBeforeGoto, TargetIndex.C,
+        foreach (var toil in HeatMealInjector.InjectHeat(values, __instance, numToilsBeforeGoto, TargetIndex.C,
                      TargetIndex.B))
         {
             yield return toil;
