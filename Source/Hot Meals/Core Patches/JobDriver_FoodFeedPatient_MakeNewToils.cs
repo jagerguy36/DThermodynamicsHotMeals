@@ -10,10 +10,10 @@ public static class JobDriver_FoodFeedPatient_MakeNewToils
 {
     public static IEnumerable<Toil> Postfix(IEnumerable<Toil> values, JobDriver_FoodFeedPatient __instance)
     {
-        var numToilsBeforeGoto = 2;
+        var numToilsBeforeGoto = 5;
         if (__instance.pawn.inventory != null && __instance.pawn.inventory.Contains(__instance.job.targetA.Thing))
         {
-            numToilsBeforeGoto--;
+            numToilsBeforeGoto = 0;
         }
 
         foreach (var toil in HeatMealInjector.InjectHeat(values, __instance, numToilsBeforeGoto))
