@@ -13,7 +13,7 @@ public static class HeatMealInjector
         int currentIndex = 0;
         foreach (var toil in values)
         {
-            if (currentIndex == targetIndex)
+            if (currentIndex == num)
             {
                 foreach (var heatToil in Heat(jd, foodIndex, tableIndex))
                 {

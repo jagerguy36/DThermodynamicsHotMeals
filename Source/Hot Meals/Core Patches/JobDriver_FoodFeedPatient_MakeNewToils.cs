@@ -15,7 +15,7 @@ public static class JobDriver_FoodFeedPatient_MakeNewToils
         {
             if (currentIndex == 5 || currentIndex == 10 || currentIndex == 13)
             {
-                foreach (var heatToil in Heat(__instance))
+                foreach (var heatToil in HeatMealInjector.Heat(__instance))
                 {
                     yield return heatToil;
                 }
